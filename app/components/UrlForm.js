@@ -4,13 +4,10 @@ import { useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
 function makeid(length) {
-    let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-      counter += 1;
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
 }
@@ -19,9 +16,13 @@ export default function UrlForm() {
     const [longUrl, setLongUrl] = useState('');
     const [shortUrl, setShortUrl] = useState('');
     const [message, setMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setMessage('');
+        setShortUrl('');
+        setIsLoading(true);
 
         const isValidUrl = (url) => {
             try {
@@ -34,61 +35,78 @@ export default function UrlForm() {
 
         if (!isValidUrl(longUrl)) {
             setMessage('Geçersiz URL formatı.');
+            setIsLoading(false);
             return;
         }
 
-        let shortId = makeid(6);
+        let shortId;
         let exists = true;
+        let attempts = 0;
+        const maxAttempts = 5;
 
-        while (exists) {
-            const { data, error } = await supabase
-                .from('urls')
-                .select('id')
-                .eq('short_url', shortId)
-                .single();
-
-            if (error && error.code === 'PGRST116') { // No rows found
-                exists = false;
-            } else {
+        try {
+            while (exists && attempts < maxAttempts) {
                 shortId = makeid(6);
+                const { data, error } = await supabase
+                    .from('urls')
+                    .select('id')
+                    .eq('short_url', shortId)
+                    .single();
+
+                if (error && error.code === 'PGRST116') { // 404 Not Found
+                    exists = false;
+                } else if (!error && data) {
+                    attempts += 1;
+                } else {
+                    throw error;
+                }
             }
-        }
 
-        const { data, error } = await supabase
-            .from('urls')
-            .insert([
-                { short_url: shortId, long_url: longUrl }
-            ]);
+            if (exists) {
+                setMessage('Kısa ID oluşturulurken bir sorun oluştu. Lütfen tekrar deneyin.');
+                setIsLoading(false);
+                return;
+            }
 
-        if (error) {
-            setMessage('Bir hata oluştu: ' + error.message);
-        } else {
-            setShortUrl(`${window.location.origin}/${shortId}`);
-            setMessage('Kısa URL oluşturuldu!');
-            setLongUrl('');
+            const { data: insertData, error: insertError } = await supabase
+                .from('urls')
+                .insert([{ short_url: shortId, long_url: longUrl }]);
+
+            if (insertError) {
+                setMessage('Bir hata oluştu: ' + insertError.message);
+            } else {
+                setShortUrl(`${window.location.origin}/${shortId}`);
+                setMessage('Kısa URL oluşturuldu!');
+                setLongUrl('');
+            }
+        } catch (error) {
+            console.error('Error during URL shortening:', error);
+            setMessage('Bir hata oluştu. Lütfen daha sonra tekrar deneyin.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div style={{ maxWidth: '500px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
-            <h1 style={{ fontSize: '24px', marginBottom: '20px' }}>Kısa URL Oluştur</h1>
-            <form onSubmit={handleSubmit}>
+        <div className="linkArea">
+            <h1 className="title">Kısa URL Oluştur</h1>
+            <form className="form" onSubmit={handleSubmit}>
                 <input
                     type="url"
                     placeholder="Uzun URL'yi buraya girin"
                     value={longUrl}
                     onChange={(e) => setLongUrl(e.target.value)}
                     required
-                    style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '4px' }}
+                    className="link-input"
                 />
-                <button type="submit" style={{ width: '100%', padding: '10px', backgroundColor: '#0070f3', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>
-                    Kısalt
+                <button type="submit" className="submit-button" disabled={isLoading}>
+                    {isLoading ? 'Kısaltılıyor...' : 'Kısalt'}
                 </button>
             </form>
-            {message && <p style={{ marginTop: '20px' }}>{message}</p>}
+            {message && <p className="message">{message}</p>}
             {shortUrl && (
-                <p style={{ marginTop: '10px' }}>
-                    Kısa URL: <a href={shortUrl} style={{ color: '#0070f3' }}>{shortUrl}</a>
+                <p className="short-url">
+                    Kısa URL: <a href={shortUrl} target="_blank" rel="noopener noreferrer">{shortUrl}</a>
                 </p>
             )}
         </div>
