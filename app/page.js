@@ -1,8 +1,9 @@
-import styles from "./page.module.css";
+import UrlForm from '../app/components/UrlForm';
 
 export default function Home() {
-  return (
-  <>
-  </>
-  );
+    return (
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <UrlForm />
+        </div>
+    );
 }
