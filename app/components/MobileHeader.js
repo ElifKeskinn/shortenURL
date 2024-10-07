@@ -1,6 +1,6 @@
 "use client";
 import Logo from "@/components/svgs/logo";
-
+import Link from 'next/link';
 
 const MobileHeader = () => {
   const toggleMenu = () => {
@@ -21,7 +21,7 @@ const MobileHeader = () => {
               <li><a href="#">Features</a></li>
               <li><a href="#">Pricing</a></li>
               <li className="resources"><a href="#">Resources</a></li>
-              <li><a href="#">Login</a></li>
+              <li> <Link href="/login">login</Link> </li>
               <li><a href="#" className="sign">Sign Up</a></li>
             </ul>
           </nav>
