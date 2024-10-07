@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
 
 function makeid(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -39,41 +38,20 @@ export default function UrlForm() {
             return;
         }
 
-        let shortId;
-        let exists = true;
-        let attempts = 0;
-        const maxAttempts = 5;
-
+        let shortId = makeid(6);
         try {
-            while (exists && attempts < maxAttempts) {
-                shortId = makeid(6);
-                const { data, error } = await supabase
-                    .from('urls')
-                    .select('id')
-                    .eq('short_url', shortId)
-                    .single();
+            const response = await fetch('/api/supabase/createClient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ longUrl, shortId }),
+            });
 
-                if (error && error.code === 'PGRST116') { // 404 Not Found
-                    exists = false;
-                } else if (!error && data) {
-                    attempts += 1;
-                } else {
-                    throw error;
-                }
-            }
+            const data = await response.json();
 
-            if (exists) {
-                setMessage('Kısa ID oluşturulurken bir sorun oluştu. Lütfen tekrar deneyin.');
-                setIsLoading(false);
-                return;
-            }
-
-            const { data: insertData, error: insertError } = await supabase
-                .from('urls')
-                .insert([{ short_url: shortId, long_url: longUrl }]);
-
-            if (insertError) {
-                setMessage('Bir hata oluştu: ' + insertError.message);
+            if (data.error) {
+                setMessage(`Hata: ${data.error}`);
             } else {
                 setShortUrl(`${window.location.origin}/${shortId}`);
                 setMessage('Kısa URL oluşturuldu!');

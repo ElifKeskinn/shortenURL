@@ -1,12 +1,13 @@
 import { redirect } from 'next/navigation';
-import { supabase } from '../lib/supabaseClient';
+
+import { createClient } from "@/app/api/supabase/server";
 
 export default async function RedirectPage({ params }) {
     const { shortId } = params;
 
     console.log(`Redirecting for shortId: ${shortId}`);
 
-    const { data, error } = await supabase
+    const { data, error } = await createClient
         .from('urls')
         .select('long_url')
         .eq('short_url', shortId)

@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/app/api/supabase/server";
 
 const defaultUserMetadata = {
     role: "user",
