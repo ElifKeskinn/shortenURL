@@ -1,4 +1,4 @@
-import { login } from "@/actions/auth";
+import { login, signup } from "./actions"
 
 export default function LoginPage() {
   return (
@@ -9,5 +9,5 @@ export default function LoginPage() {
       <input id="password" name="password" type="password" required />
       <button formAction={login}>Log in</button>
     </form>
-  );
+  )
 }

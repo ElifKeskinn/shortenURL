@@ -1,27 +1,46 @@
-'use server';
+'use server'
 
-import { redirect } from 'next/navigation';
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
+
+import { createServerClient } from '../api/supabase/server'
 
 export async function login(formData) {
-  const email = formData.get('email');
-  const password = formData.get('password');
+  const supabase = createServerClient()
 
-  const response = await fetch('/api/supabase', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ 
-      email, 
-      password, 
-      action: 'login' 
-    }),
-  });
-
-  const data = await response.json();
-
-  if (data.error) {
-    console.error(`Giriş olurken hata: ${data.error}`);
-    redirect('/error');
-  } else {
-    redirect('/');
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get('email'),
+    password: formData.get('password'),
   }
+
+  const { error } = await supabase.auth.signInWithPassword(data)
+
+  if (error) {
+    redirect('/error')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/')
 }
+
+export async function signup(formData) {
+  const supabase = createServerClient()
+
+  // type-casting here for convenience
+  // in practice, you should validate your inputs
+  const data = {
+    email: formData.get('email'),
+    password: formData.get('password'),
+  }
+
+  const { error } = await supabase.auth.signUp(data)
+
+  if (error) {
+    redirect('/error')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/')
+} 
