@@ -1,6 +1,15 @@
-import { createServerClient } from '@supabase/supabase-js';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+
+
+export function createClient() {
+  const cookieStore = cookies();
+
+  return createServerComponentClient({
+    cookies: () => cookieStore,
+  });
+}
 
 export async function POST(req) {
   const cookieStore = cookies();
