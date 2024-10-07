@@ -1,4 +1,5 @@
 import Logo from "@/components/svgs/logo";
+import Link from 'next/link';
 
 const DesktopHeader = () => {
   return (
