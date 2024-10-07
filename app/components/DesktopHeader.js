@@ -14,7 +14,7 @@ const DesktopHeader = () => {
       </div>
       <div className="loginNav">
       <Link href="/login">login</Link>
-      <a  href="#">Sign Up</a>
+      <Link href="/signup">sign up</Link>
       </div>
     </div>
   );

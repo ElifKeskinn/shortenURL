@@ -22,7 +22,7 @@ const MobileHeader = () => {
               <li><a href="#">Pricing</a></li>
               <li className="resources"><a href="#">Resources</a></li>
               <li> <Link href="/login">login</Link> </li>
-              <li><a href="#" className="sign">Sign Up</a></li>
+              <li> <Link href="/signup">sign up</Link> </li>
             </ul>
           </nav>
         </div>
