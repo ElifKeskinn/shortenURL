@@ -1,15 +1,15 @@
 import { signUp } from "@/actions/auth";
 
-export default function SignUPPage(){
-    return(
-        <div>
-            <form action={signUp}>
-                <input type="text" name="firstName" placeholder="Adınız" />
-                <input type="text" name="lastName" placeholder="Soyadınız" />
-                <input type="email" name="email" placeholder="E-posta Adresiniz" />
-                <input type="password" name="password" placeholder="Şifreniz" />
-                <button>Kayıt Ol</button>
-            </form>
-        </div>
-    )
+export default function SignUpPage() {
+  return (
+    <div>
+      <form>
+        <input type="text" name="firstName" placeholder="Adınız" required />
+        <input type="text" name="lastName" placeholder="Soyadınız" required />
+        <input type="email" name="email" placeholder="E-posta Adresiniz" required />
+        <input type="password" name="password" placeholder="Şifreniz" required />
+        <button formAction={signUp}>Kayıt Ol</button>
+      </form>
+    </div>
+  );
 }

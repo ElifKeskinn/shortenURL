@@ -22,29 +22,15 @@ export async function POST(req) {
     }
   );
 
-  const { email, password, action, firstName, lastName } = await req.json();
+  const { longUrl, shortId } = await req.json();
 
-  let error;
-  if (action === 'login') {
-    const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
-    error = loginError;
-  } else if (action === 'signup') {
-    const { error: signupError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          firstName,
-          lastName,
-          role: 'user',
-          profilePhoto: '',
-          bio: '',
-          birthDate: '',
-        },
-      },
-    });
-    error = signupError;
+  if (!longUrl || !shortId) {
+    return NextResponse.json({ error: 'Eksik parametreler.' }, { status: 400 });
   }
+
+  const { data, error } = await supabase.from('urls').insert([
+    { long_url: longUrl, short_url: shortId },
+  ]);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });

@@ -1,4 +1,4 @@
-import { login, signup } from "./actions.js";
+import { login } from "@/actions/auth";
 
 export default function LoginPage() {
   return (
@@ -8,7 +8,6 @@ export default function LoginPage() {
       <label htmlFor="password">Password:</label>
       <input id="password" name="password" type="password" required />
       <button formAction={login}>Log in</button>
-      <button formAction={signup}>Sign up</button>
     </form>
-  )
+  );
 }
