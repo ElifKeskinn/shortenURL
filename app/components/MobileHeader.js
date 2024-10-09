@@ -3,6 +3,7 @@ import Logo from '@/components/svgs/logo';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import Hero from './Hero'; 
 
 const MobileHeader = () => {
   const [user, setUser] = useState(null);
@@ -37,48 +38,48 @@ const MobileHeader = () => {
   };
 
   return (
-    <div className="mobileHeader">
-      <Logo />
-      <div className="hamburgerMenu">
-        <div className="menu-container">
-          <div className="menu-icon" onClick={toggleMenu}>
-            ☰
+    <>
+      <div className="mobileHeader">
+        <Logo />
+        <div className="hamburgerMenu">
+          <div className="menu-container">
+            <div className="menu-icon" onClick={toggleMenu}>
+              ☰
+            </div>
+            <nav id="menu" className="menu" style={{ display: 'none' }}>
+              <ul>
+                <li>
+                  <a href="#">Features</a>
+                </li>
+                <li>
+                  <a href="#">Pricing</a>
+                </li>
+                <li className="resources">
+                  <a href="#">Resources</a>
+                </li>
+                {user ? (
+                  <>
+                    <li>
+                      <button onClick={handleSignOut}>Çıkış Yap</button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li>
+                      <Link href="/login">Giriş Yap</Link>
+                    </li>
+                    <li>
+                      <Link href="/signup">Kayıt Ol</Link>
+                    </li>
+                  </>
+                )}
+              </ul>
+            </nav>
           </div>
-          <nav id="menu" className="menu" style={{ display: 'none' }}>
-            <ul>
-              <li>
-                <a href="#">Features</a>
-              </li>
-              <li>
-                <a href="#">Pricing</a>
-              </li>
-              <li className="resources">
-                <a href="#">Resources</a>
-              </li>
-              {user ? (
-                <>
-                  <li>
-                    <span>Merhaba {user.email}</span>
-                  </li>
-                  <li>
-                    <button onClick={handleSignOut}>Çıkış Yap</button>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li>
-                    <Link href="/login">Giriş Yap</Link>
-                  </li>
-                  <li>
-                    <Link href="/signup">Kayıt Ol</Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </nav>
         </div>
       </div>
-    </div>
+      <Hero email={user ? user.email : null} /> {/* Hero'ya email'i prop olarak geçiyoruz */}
+    </>
   );
 };
 

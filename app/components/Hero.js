@@ -1,6 +1,6 @@
 import IllustrationWorking from "@/components/svgs/illustrationWorking"
 
-const Hero = () => {
+const Hero = ({email}) => {
   return (
     <div className="hero">
       <div className="desktopBanner">
@@ -8,6 +8,7 @@ const Hero = () => {
           <h1>More than just shorter links</h1>
           <p>Build your brand&apos;s recognition and get detailed insights on how your links are performing.</p>
           <a href="/">Get Started</a>
+          {email && <span>Merhaba {email}</span>}
         </div>
         <IllustrationWorking />
       </div>
