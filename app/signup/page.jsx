@@ -36,15 +36,15 @@ export default function SignUpPage() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSignUp}>
-        <input type="text" name="firstName" placeholder="Adınız" required />
-        <input type="text" name="lastName" placeholder="Soyadınız" required />
-        <input type="email" name="email" placeholder="E-posta Adresiniz" required />
-        <input type="password" name="password" placeholder="Şifreniz" required />
-        <button type="submit">Kayıt Ol</button>
+    <div className="signup-container">
+      <form className="signup-form" onSubmit={handleSignUp}>
+        <input type="text" name="firstName" placeholder="Adınız" required className="input-field" />
+        <input type="text" name="lastName" placeholder="Soyadınız" required className="input-field" />
+        <input type="email" name="email" placeholder="E-posta Adresiniz" required className="input-field" />
+        <input type="password" name="password" placeholder="Şifreniz" required className="input-field" />
+        <button type="submit" className="submit-btn">Kayıt Ol</button>
       </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>} 
+      {error && <p className="error-message">{error}</p>} 
     </div>
   );
 }

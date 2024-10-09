@@ -44,7 +44,7 @@ const DesktopHeader = () => {
         <div className="loginNav">
           {user ? (
             <>
-              <button onClick={handleSignOut}>Çıkış Yap</button>
+               <button className="signOutBtn"  onClick={handleSignOut}>Çıkış Yap</button>
             </>
           ) : (
             <>

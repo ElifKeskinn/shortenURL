@@ -22,14 +22,16 @@ export default function LoginPage() {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <label htmlFor="email">Email:</label>
-      <input id="email" name="email" type="email" required />
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleLogin}>
+        <label htmlFor="email" className="form-label">Email:</label>
+        <input id="email" name="email" type="email" required className="input-field" />
 
-      <label htmlFor="password">Password:</label>
-      <input id="password" name="password" type="password" required />
-      <button type="submit">Giriş Yap</button>
-      {error && <p style={{ color: 'red' }}>{error}</p>} 
-    </form>
+        <label htmlFor="password" className="form-label">Password:</label>
+        <input id="password" name="password" type="password" required className="input-field" />
+        <button type="submit" className="submit-btn">Giriş Yap</button>
+      </form>
+      {error && <p className="error-message">{error}</p>} 
+    </div>
   );
 }

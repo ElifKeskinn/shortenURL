@@ -60,7 +60,7 @@ const MobileHeader = () => {
                 {user ? (
                   <>
                     <li>
-                      <button onClick={handleSignOut}>Çıkış Yap</button>
+                      <button className="signOutBtn" onClick={handleSignOut}>Çıkış Yap</button>
                     </li>
                   </>
                 ) : (
