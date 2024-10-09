@@ -44,6 +44,7 @@ const DesktopHeader = () => {
         <div className="loginNav">
           {user ? (
             <>
+             <Link href="/user-links">Kısaltılmış Linklerim</Link>
                <button className="signOutBtn"  onClick={handleSignOut}>Çıkış Yap</button>
             </>
           ) : (
@@ -54,7 +55,7 @@ const DesktopHeader = () => {
           )}
         </div>
       </div>
-      <Hero email={user ? user.email : null} /> {/* Hero'ya email'i prop olarak geçiyoruz */}
+      <Hero email={user ? user.email : null} /> 
     </>
   );
 };

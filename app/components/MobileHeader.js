@@ -3,7 +3,7 @@ import Logo from '@/components/svgs/logo';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import Hero from './Hero'; 
+import Hero from './Hero';
 
 const MobileHeader = () => {
   const [user, setUser] = useState(null);
@@ -34,7 +34,7 @@ const MobileHeader = () => {
   const handleSignOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
-    window.location.reload(); 
+    window.location.reload();
   };
 
   return (
@@ -60,6 +60,9 @@ const MobileHeader = () => {
                 {user ? (
                   <>
                     <li>
+                      <Link href="/user-links">Kısaltılmış Linklerim</Link>
+                    </li>
+                    <li>
                       <button className="signOutBtn" onClick={handleSignOut}>Çıkış Yap</button>
                     </li>
                   </>
@@ -78,7 +81,7 @@ const MobileHeader = () => {
           </div>
         </div>
       </div>
-      <Hero email={user ? user.email : null} /> {/* Hero'ya email'i prop olarak geçiyoruz */}
+      <Hero email={user ? user.email : null} />
     </>
   );
 };
