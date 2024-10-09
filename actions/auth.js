@@ -2,7 +2,6 @@
 
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 const defaultUserMetadata = {
   role: 'user',
@@ -30,9 +29,9 @@ export async function signUp(formData) {
 
   if (error) {
     console.error('Error signing up:', error);
-    redirect('/error');
+    return { success: false, message: error.message };
   } else {
-    redirect('/');
+    return { success: true };
   }
 }
 
@@ -46,8 +45,8 @@ export async function login(formData) {
 
   if (error) {
     console.error('Error logging in:', error);
-    redirect('/error');
+    return { success: false, message: error.message };
   } else {
-    redirect('/');
+    return { success: true };
   }
 }

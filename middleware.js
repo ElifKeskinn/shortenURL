@@ -5,29 +5,11 @@ export async function middleware(req) {
   const res = NextResponse.next();
   const supabase = createMiddlewareClient({ req, res });
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  const protectedRoutes = ['/dashboard', '/profile'];
-
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    req.nextUrl.pathname.startsWith(route)
-  );
-
-  if (isProtectedRoute && !session) {
-    const redirectUrl = req.nextUrl.clone();
-    redirectUrl.pathname = '/login';
-    redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname);
-    return NextResponse.redirect(redirectUrl);
-  }
+  await supabase.auth.getSession();
 
   return res;
 }
 
 export const config = {
-  matcher: [
-    '/dashboard/:path*',
-    '/profile/:path*',
-  ],
+  matcher: '/((?!_next/static|_next/image|favicon.ico).*)', 
 };

@@ -12,8 +12,11 @@ const MobileHeader = () => {
     async function fetchUser() {
       const {
         data: { user },
+        error,
       } = await supabase.auth.getUser();
-      if (user) {
+      if (error) {
+        console.error('Error fetching user:', error);
+      } else if (user) {
         setUser(user);
       }
     }
@@ -54,16 +57,20 @@ const MobileHeader = () => {
               </li>
               {user ? (
                 <>
-                  <span>Hello {user.email}</span>
-                  <button onClick={handleSignOut}>Çıkış Yap</button>
+                  <li>
+                    <span>Merhaba {user.email}</span>
+                  </li>
+                  <li>
+                    <button onClick={handleSignOut}>Çıkış Yap</button>
+                  </li>
                 </>
               ) : (
                 <>
                   <li>
-                    <Link href="/login">Login</Link>
+                    <Link href="/login">Giriş Yap</Link>
                   </li>
                   <li>
-                    <Link href="/signup">Sign Up</Link>
+                    <Link href="/signup">Kayıt Ol</Link>
                   </li>
                 </>
               )}

@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '../api/supabase/server';
+import { createClient } from '../../utils/supabase/server';
 
 export async function login(formData) {
   const supabase = createClient();

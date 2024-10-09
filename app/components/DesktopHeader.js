@@ -12,8 +12,11 @@ const DesktopHeader = () => {
     async function fetchUser() {
       const {
         data: { user },
+        error,
       } = await supabase.auth.getUser();
-      if (user) {
+      if (error) {
+        console.error('Error fetching user:', error);
+      } else if (user) {
         setUser(user);
       }
     }
@@ -39,13 +42,13 @@ const DesktopHeader = () => {
       <div className="loginNav">
         {user ? (
           <>
-            <span>Hello {user.email}</span>
+            <span>Merhaba {user.email}</span>
             <button onClick={handleSignOut}>Çıkış Yap</button>
           </>
         ) : (
           <>
-            <Link href="/login">Login</Link>
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/login">Giriş Yap</Link>
+            <Link href="/signup">Kayıt Ol</Link>
           </>
         )}
       </div>
