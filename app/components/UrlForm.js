@@ -46,22 +46,24 @@ export default function UrlForm() {
     console.log('Generated shortId:', shortId);
 
     try {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error || !session) {
-        console.error('Oturum bilgisi alınamadı:', error);
-        setMessage('Lütfen giriş yapınız.');
-        setIsLoading(false);
-        return;
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error('Oturum bilgisi uok:', sessionError);
       }
 
       console.log('Session data:', session);
 
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+
+      if (session && session.access_token) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
+      }
+
       const response = await fetch('/api/shorten', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.access_token}`,
-        },
+        headers,
         body: JSON.stringify({ longUrl, shortId }),
       });
 

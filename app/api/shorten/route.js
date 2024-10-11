@@ -17,20 +17,18 @@ export async function POST(req) {
 
   const { data: { user }, error: userError } = await supabase.auth.getUser();
   if (userError) {
-    console.log('User error:', userError.message);
-    return NextResponse.json({ error: 'Kullanıcı giriş yapmamış.' }, { status: 401 });
-  }
+    console.log('User error:', userError.message);  }
   if (!user) {
-    console.log('No user found.');
-    return NextResponse.json({ error: 'Kullanıcı giriş yapmamış.' }, { status: 401 });
+    console.log('No user found. Setting user_id to null.');
   }
   
-  console.log('User ID:', user.id);
+  const userId = user ? user.id : null;
+  console.log('User ID:', userId);
 
   const { data, error } = await supabase
     .from('urls')
     .insert([
-      { long_url: longUrl, short_url: shortId, user_id: user.id }
+      { long_url: longUrl, short_url: shortId, user_id: userId }
     ]);
 
   if (error) {
