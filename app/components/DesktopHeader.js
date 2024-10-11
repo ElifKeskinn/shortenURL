@@ -55,7 +55,6 @@ const DesktopHeader = () => {
           )}
         </div>
       </div>
-      <Hero email={user ? user.email : null} /> 
     </>
   );
 };
