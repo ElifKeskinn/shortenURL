@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import styles from './UserLinks.module.css';
 
 const UserLinks = () => {
   const [links, setLinks] = useState([]);
@@ -41,28 +42,30 @@ const UserLinks = () => {
     fetchUserAndLinks();
   }, []);
 
+ 
   if (loading) {
-    return <div>Yükleniyor...</div>;
+    return <div className={styles.loading}>Yükleniyor...</div>;
   }
 
   return (
-    <div>
-      <h1>{user?.email} için kısaltılmış linkler</h1>
+    <div className={styles.userLinksPage}>
+      <h1 className={styles.pageTitle}>{user?.email} için kısaltılmış linkler</h1>
       {links.length > 0 ? (
-        <ul>
+        <ul className={styles.linksList}>
           {links.map((link) => (
-            <li key={link.id}>
-              <a href={link.short_url} target="_blank" rel="noopener noreferrer">
+            <li key={link.id} className={styles.linkItem}>
+              <a href={link.short_url} target="_blank" rel="noopener noreferrer" className={styles.shortUrl}>
                 {link.short_url}
-              </a> - {link.long_url}
+              </a> - <span className={styles.longUrl}>{link.long_url}</span>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Henüz hiç link kısaltmadınız.</p>
+        <p className={styles.noLinksMessage}>Henüz hiç link kısaltmadınız.</p>
       )}
     </div>
   );
 };
+
 
 export default UserLinks;

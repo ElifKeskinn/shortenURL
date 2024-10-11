@@ -1,0 +1,57 @@
+.userLinksPage {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .pageTitle {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .linksList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .linkItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .shortUrl {
+    font-weight: bold;
+    color: #0070f3;
+    text-decoration: none;
+  }
+  
+  .shortUrl:hover {
+    text-decoration: underline;
+  }
+  
+  .longUrl {
+    color: #555;
+    font-style: italic;
+  }
+  
+  .noLinksMessage {
+    text-align: center;
+    color: #999;
+    margin-top: 20px;
+  }
+  
+  .loading {
+    text-align: center;
+    font-size: 18px;
+    color: #0070f3;
+    margin-top: 20px;
+  }
+  
